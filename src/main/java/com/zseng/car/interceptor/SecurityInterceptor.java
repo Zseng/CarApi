@@ -29,12 +29,12 @@ public class SecurityInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         URI uri = new URI(httpServletRequest.getRequestURI());
         String path = uri.getPath().substring(1);
-        logger.trace("->");
-        logger.trace("path: {}", path);
-        logger.trace("query: {}", httpServletRequest.getQueryString());
-        logger.trace("parameter: ");
-        httpServletRequest.getParameterMap().entrySet().forEach(stringEntry -> logger.trace("{}: {}", stringEntry.getKey(), stringEntry.getValue()));
-        logger.trace("<-");
+        logger.info("->");
+        logger.info("path: {}", path);
+        logger.info("query: {}", httpServletRequest.getQueryString());
+        logger.info("parameter: ");
+        httpServletRequest.getParameterMap().entrySet().forEach(stringEntry -> logger.info("    {}: {}", stringEntry.getKey(), stringEntry.getValue()));
+        logger.info("<-");
 
 //        if (!canGuestAccess(path))
 //        {

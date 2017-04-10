@@ -35,7 +35,7 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(name = "name", nullable = false, length = 199)
     @JsonProperty("name")
     @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
     public String getName() {
@@ -83,7 +83,7 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "password", nullable = false, length = 80)
+    @Column(name = "password", nullable = false, length = 199)
     public String getPassword() {
         return password;
     }

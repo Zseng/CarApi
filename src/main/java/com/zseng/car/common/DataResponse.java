@@ -19,6 +19,17 @@ public class DataResponse {
         this.data = new HashMap<String, Object>();
     }
 
+    public static DataResponse create()
+    {
+        return new DataResponse();
+    }
+
+    public DataResponse putAll(Map<String, Object> data)
+    {
+        data.entrySet().forEach(entry -> this.data.put(entry.getKey(), entry.getValue()));
+        return this;
+    }
+
     public DataResponse put(String key, Object object) {
         this.data.put(key, object);
         return this;

@@ -28,10 +28,12 @@ public class WebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.antMatcher("/api/**")
+            http.authorizeRequests()
+                    .antMatchers("/api/v1/user/register").permitAll()
+                    .and()
+                    .antMatcher("/api/**")
                     .authorizeRequests()
                     .antMatchers(HttpMethod.GET).permitAll()
-                    .antMatchers(HttpMethod.POST).authenticated()
                     .anyRequest().authenticated()
                     .and()
                     .csrf().disable()
