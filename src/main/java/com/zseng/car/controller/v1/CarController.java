@@ -81,7 +81,7 @@ public class CarController {
                                 @RequestParam("price_type") Integer priceType,
                                 @RequestParam("price") Double price,
                                 @RequestParam("phone") String phone,
-                                @RequestParam("img") String img,
+                                @RequestParam("img") String img,//逗号隔开的图片名称字符串eg: "a.png,b.png"
                                 @RequestParam(value = "discount", required = false, defaultValue = "0.00") Double discount) {
 
 

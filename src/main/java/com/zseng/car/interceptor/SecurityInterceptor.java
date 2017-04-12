@@ -1,29 +1,20 @@
 package com.zseng.car.interceptor;
 
-import com.zseng.car.common.Config;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
 
+//主要是拿来看日志用的
 @Component
 public class SecurityInterceptor implements HandlerInterceptor {
 
     private static Logger logger = org.slf4j.LoggerFactory.getLogger(SecurityInterceptor.class);
-
-    private boolean canGuestAccess(String path) {
-
-        List<Pattern> patternList = Arrays.asList(Config.PATH_GUEST_CAN_ACCESS_PATTERN);
-        return patternList.stream().anyMatch(p -> p.matcher(path).matches());
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -33,13 +24,10 @@ public class SecurityInterceptor implements HandlerInterceptor {
         logger.info("path: {}", path);
         logger.info("query: {}", httpServletRequest.getQueryString());
         logger.info("parameter: ");
-        httpServletRequest.getParameterMap().entrySet().forEach(stringEntry -> logger.info("    {}: {}", stringEntry.getKey(), stringEntry.getValue()));
+        if (!(httpServletRequest instanceof MultipartHttpServletRequest)) {
+            httpServletRequest.getParameterMap().forEach((key, value) -> logger.info("    {}: {}", key, value));
+        }
         logger.info("<-");
-
-//        if (!canGuestAccess(path))
-//        {
-//
-//        }
 
         return true;
     }

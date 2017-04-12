@@ -23,10 +23,8 @@ import java.util.HashMap;
 @Controller
 public class UploadController {
 
-
     @Autowired
     UploadService uploadService;
-
 
     @RequestMapping("/img")
     @JsonView(OutputEntityJsonView.Detail.class)
