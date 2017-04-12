@@ -20,6 +20,7 @@ public class HistoryService {
     public void insertOne(Long userId, Long carId) {
         HistoryEntity history = new HistoryEntity();
         history.setCarId(carId);
+        history.setUserId(userId);
         history.setCreateTime(Util.time());
         history.setUpdateTime(history.getCreateTime());
 
