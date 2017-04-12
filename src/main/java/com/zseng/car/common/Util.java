@@ -1,5 +1,8 @@
 package com.zseng.car.common;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Sets;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -51,5 +54,23 @@ public class Util {
             id[i] = chars[r.nextInt(chars.length)];
         }
         return new String(id);
+    }
+
+    public static List<String> explodeUrlString(String urlString) {
+        HashSet<String> idStringSet = Sets.newHashSet(Splitter.on(',')
+                .trimResults()
+                .omitEmptyStrings()
+                .split(urlString));
+
+        return new ArrayList<>(idStringSet);
+    }
+
+    public static List<String> explodeIdString(String idString) {
+        HashSet<String> idStringSet = Sets.newHashSet(Splitter.on(',')
+                .trimResults()
+                .omitEmptyStrings()
+                .split(idString));
+
+        return new ArrayList<>(idStringSet);
     }
 }

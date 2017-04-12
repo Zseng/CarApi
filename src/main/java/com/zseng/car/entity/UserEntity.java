@@ -13,13 +13,13 @@ import javax.persistence.*;
 @Table(name = "user", schema = "car_grad", catalog = "")
 public class UserEntity {
     private long id;
-    private String name;
-    private String username;
-    private String phone;
-    private String email;
-    private String password;
-    private long createTime;
-    private long updateTime;
+    private String name = "";
+    private String username = "";
+    private String phone = "";
+    private String email = "";
+    private String password = "";
+    private long createTime = 0;
+    private long updateTime = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

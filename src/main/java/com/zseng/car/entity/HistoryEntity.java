@@ -3,16 +3,17 @@ package com.zseng.car.entity;
 import javax.persistence.*;
 
 /**
- * Created by cc on 2017/4/10.
+ * Created by cc on 2017/4/12.
  */
 @Entity
-@Table(name = "latest", schema = "car_grad", catalog = "")
-public class LatestEntity {
+@Table(name = "history", schema = "car_grad", catalog = "")
+public class HistoryEntity {
+
     private long id;
     private long userId;
     private long carId;
-    private long createTime;
-    private long updateTime;
+    private long createTime = 0;
+    private long updateTime = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,7 +71,7 @@ public class LatestEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        LatestEntity that = (LatestEntity) o;
+        HistoryEntity that = (HistoryEntity) o;
 
         if (id != that.id) return false;
         if (userId != that.userId) return false;

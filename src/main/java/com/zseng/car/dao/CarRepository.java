@@ -8,5 +8,8 @@ import org.springframework.stereotype.Repository;
  * Created by cc on 2017/4/10.
  */
 @Repository
-public interface CarDao extends JpaRepository<CarEntity, Long> {
+public interface CarRepository extends JpaRepository<CarEntity, Long> {
+
+    CarEntity findById(Long id);
+
 }

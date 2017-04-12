@@ -2,6 +2,7 @@ package com.zseng.car.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.data.domain.Page;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,19 +20,24 @@ public class DataResponse {
         this.data = new HashMap<String, Object>();
     }
 
-    public static DataResponse create()
-    {
+    public static DataResponse create() {
         return new DataResponse();
     }
 
-    public DataResponse putAll(Map<String, Object> data)
-    {
-        data.entrySet().forEach(entry -> this.data.put(entry.getKey(), entry.getValue()));
+    public DataResponse putAll(Map<String, Object> data) {
+        this.data.putAll(data);
         return this;
     }
 
     public DataResponse put(String key, Object object) {
         this.data.put(key, object);
+        return this;
+    }
+
+    public DataResponse putPage(String key, Page page) {
+        this.data.put(key, page.getContent());
+        this.data.put("totalPages", page.getTotalPages());
+        this.data.put("number", page.getNumber());
         return this;
     }
 

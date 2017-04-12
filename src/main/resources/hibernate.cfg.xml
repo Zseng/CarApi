@@ -7,9 +7,9 @@
     <property name="connection.url">jdbc:mysql://localhost:3306/car_grad</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
       <mapping class="com.zseng.car.entity.CarEntity"/>
-      <mapping class="com.zseng.car.entity.LatestEntity"/>
-      <mapping class="com.zseng.car.entity.UserEntity"/>
-      <!-- <property name="connection.username"/> -->
+    <mapping class="com.zseng.car.entity.UserEntity"/>
+    <mapping class="com.zseng.car.entity.HistoryEntity"/>
+    <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
     <!-- DB schema will be updated if needed -->

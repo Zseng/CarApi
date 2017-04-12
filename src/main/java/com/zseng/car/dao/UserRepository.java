@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  * Created by cc on 2017/4/10.
  */
 @Repository
-public interface UserDao extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findByUsername(String username);
 

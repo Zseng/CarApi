@@ -1,6 +1,6 @@
 package com.zseng.car.dao;
 
-import com.zseng.car.entity.LatestEntity;
+import com.zseng.car.entity.HistoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
  * Created by cc on 2017/4/10.
  */
 @Component
-public interface LatestDao extends JpaRepository<LatestEntity, Long> {
+public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
     
 }

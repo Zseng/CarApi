@@ -28,13 +28,15 @@ public class WebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
+            //这里只配置访问权限
             http.authorizeRequests()
-                    .antMatchers("/api/v1/user/register").permitAll()
+                    .antMatchers("/api/v1/user/register").permitAll()//user api除了注册其他都需要认证
+                    .antMatchers("/api/v1/user/**").authenticated()
+                    .antMatchers("/api/v1/order/**").authenticated()//order api需要认证
                     .and()
-                    .antMatcher("/api/**")
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.GET).permitAll()
-                    .anyRequest().authenticated()
+                    .antMatcher("/api/v1/car/**").authorizeRequests().antMatchers(HttpMethod.GET).permitAll().anyRequest().authenticated()//car api
+                    .and()
+                    .antMatcher("/api/**").authorizeRequests().anyRequest().authenticated()//默认其他所有api均需认证
                     .and()
                     .csrf().disable()
                     .httpBasic();

@@ -5,6 +5,7 @@ public class BaseException extends RuntimeException {
     public static final int ERROR_500 = -500;
     public static final int ERROR = -1;
     public static final int ERROR_IN_INTERCEPTOR = -2;
+    public static final int ERROR_INVALID_CONFIGURATION = -3;
 
     public static final int ERROR_PARAM_NOT_SET = 1;
     public static final int ERROR_EXISTS = 2;

@@ -2,7 +2,7 @@ package com.zseng.car.service;
 
 import com.zseng.car.common.PasswordHash;
 import com.zseng.car.common.Util;
-import com.zseng.car.dao.UserDao;
+import com.zseng.car.dao.UserRepository;
 import com.zseng.car.entity.UserEntity;
 import com.zseng.car.exception.ExistsException;
 import com.zseng.car.exception.InvalidParamsException;
@@ -10,30 +10,31 @@ import com.zseng.car.exception.LoginFailException;
 import com.zseng.car.exception.NotExistsException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.List;
 
 /**
  * Created by cc on 2017/4/10.
  */
-@Component
+@Service
+@Transactional
 public class UserService {
 
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
 
     public UserEntity addUser(String username, String name, String phone, String password, String email) throws InvalidKeySpecException, NoSuchAlgorithmException {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(phone) || StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
             throw new InvalidParamsException("params can not be blank");
         }
-        UserEntity userEntity = userDao.findByUsername(username);
+        UserEntity userEntity = userRepository.findByUsername(username);
         if (userEntity != null) {
             throw new ExistsException("username exists.");
         }
-        userEntity = userDao.findByPhone(phone);
+        userEntity = userRepository.findByPhone(phone);
         if (userEntity != null) {
             throw new ExistsException("phone has been taken.");
         }
@@ -46,11 +47,11 @@ public class UserService {
         userEntity.setCreateTime(Util.time());
         userEntity.setUpdateTime(userEntity.getCreateTime());
 
-        return userDao.save(userEntity);
+        return userRepository.save(userEntity);
     }
 
     public UserEntity validateByUsername(String username, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        UserEntity user = userDao.findByUsername(username);
+        UserEntity user = userRepository.findByUsername(username);
         if (user == null || !PasswordHash.validatePassword(password, user.getPassword())) {
             throw new LoginFailException();
         }
@@ -58,7 +59,7 @@ public class UserService {
     }
 
     public UserEntity findByUsername(String username) {
-        UserEntity user = userDao.findByUsername(username);
+        UserEntity user = userRepository.findByUsername(username);
         if (user == null) {
             throw new NotExistsException();
         }
@@ -66,7 +67,7 @@ public class UserService {
     }
 
     public UserEntity update(String username, String password, String phone) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        UserEntity userEntity = userDao.findByUsername(username);
+        UserEntity userEntity = userRepository.findByUsername(username);
         if (userEntity == null) {
             throw new NotExistsException();
         }
@@ -77,7 +78,7 @@ public class UserService {
         }
         if (StringUtils.isNotBlank(phone)) {
             hasChanged = true;
-            UserEntity other = userDao.findByPhone(phone);
+            UserEntity other = userRepository.findByPhone(phone);
             if (other != null) {
                 throw new ExistsException("phone has been taken.");
             }
@@ -85,7 +86,7 @@ public class UserService {
         }
         if (hasChanged) {
             userEntity.setUpdateTime(Util.time());
-            return userDao.save(userEntity);
+            return userRepository.save(userEntity);
         } else {
             throw new InvalidParamsException();
         }

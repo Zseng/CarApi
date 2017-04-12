@@ -3,8 +3,10 @@ package com.zseng.car.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.zseng.car.common.OutputEntityJsonView;
+import com.zseng.car.common.Util;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by cc on 2017/4/10.
@@ -13,21 +15,24 @@ import javax.persistence.*;
 @Table(name = "car", schema = "car_grad", catalog = "")
 public class CarEntity {
     private long id;
-    private String name;
-    private String info;
-    private String brand;
-    private int city;
-    private int county;
-    private int district;
-    private int type;
-    private int priceType;
-    private double price;
-    private double discount;
-    private String phone;
-    private String img;
-    private long hit;
-    private long createTime;
-    private long updateTime;
+    private String name = "";
+    private String info = "";
+    private String brand = "";
+    private int city = 0;
+    private int county = 0;
+    private int district = 0;
+    private int type = 0;
+    private int priceType = 0;
+    private double price = 0;
+    private double discount = 0;
+    private String phone = "";
+    private String img = "";
+    private long hot = 0;
+    private int status = 0;
+    private long createTime = 0;
+    private long updateTime = 0;
+
+    private List<String> imgList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -117,7 +122,7 @@ public class CarEntity {
     @Basic
     @Column(name = "type", nullable = false)
     @JsonProperty("type")
-    @JsonView({OutputEntityJsonView.Detail.class})
+    @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
     public int getType() {
         return type;
     }
@@ -129,7 +134,7 @@ public class CarEntity {
     @Basic
     @Column(name = "price_type", nullable = false)
     @JsonProperty("price_type")
-    @JsonView({OutputEntityJsonView.Detail.class})
+    @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
     public int getPriceType() {
         return priceType;
     }
@@ -187,15 +192,27 @@ public class CarEntity {
     }
 
     @Basic
-    @Column(name = "hit", nullable = false)
-    @JsonProperty("hit")
-    @JsonView({OutputEntityJsonView.Detail.class})
-    public long getHit() {
-        return hit;
+    @Column(name = "hot", nullable = false)
+    @JsonProperty("hot")
+    @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
+    public long getHot() {
+        return hot;
     }
 
-    public void setHit(long hit) {
-        this.hit = hit;
+    public void setHot(long hot) {
+        this.hot = hot;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = false)
+    @JsonProperty("status")
+    @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Basic
@@ -222,6 +239,18 @@ public class CarEntity {
         this.updateTime = updateTime;
     }
 
+    @Transient
+    @JsonProperty("img_list")
+    @JsonView({OutputEntityJsonView.Detail.class})
+    public List<String> getImgList() {
+        imgList = Util.explodeUrlString(img);
+        return imgList;
+    }
+
+    public void setImgList(List<String> imgList) {
+        this.imgList = imgList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -237,7 +266,7 @@ public class CarEntity {
         if (priceType != carEntity.priceType) return false;
         if (Double.compare(carEntity.price, price) != 0) return false;
         if (Double.compare(carEntity.discount, discount) != 0) return false;
-        if (hit != carEntity.hit) return false;
+        if (hot != carEntity.hot) return false;
         if (createTime != carEntity.createTime) return false;
         if (updateTime != carEntity.updateTime) return false;
         if (name != null ? !name.equals(carEntity.name) : carEntity.name != null) return false;
@@ -268,7 +297,7 @@ public class CarEntity {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (img != null ? img.hashCode() : 0);
-        result = 31 * result + (int) (hit ^ (hit >>> 32));
+        result = 31 * result + (int) (hot ^ (hot >>> 32));
         result = 31 * result + (int) (createTime ^ (createTime >>> 32));
         result = 31 * result + (int) (updateTime ^ (updateTime >>> 32));
         return result;
