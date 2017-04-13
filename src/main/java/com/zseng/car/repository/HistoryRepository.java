@@ -1,4 +1,4 @@
-package com.zseng.car.dao;
+package com.zseng.car.repository;
 
 import com.zseng.car.entity.HistoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

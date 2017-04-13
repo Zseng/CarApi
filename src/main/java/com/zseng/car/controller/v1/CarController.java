@@ -3,13 +3,23 @@ package com.zseng.car.controller.v1;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.zseng.car.common.DataResponse;
 import com.zseng.car.common.OutputEntityJsonView;
+import com.zseng.car.entity.CarEntity;
 import com.zseng.car.service.AuthenticationFacadeService;
 import com.zseng.car.service.CarService;
 import com.zseng.car.service.HistoryService;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Conjunction;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Disjunction;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by cc on 2017/4/10.
  */
-@RestController("CarController")
+@RestController("V1.CarController")
 @RequestMapping("/api/v1/car")
 @Controller
 public class CarController {
@@ -51,9 +61,22 @@ public class CarController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @JsonView(OutputEntityJsonView.Basic.class)
-    public DataResponse carList(@PageableDefault(page = 0, size = 12, sort = {"createTime", "updateTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
+    public DataResponse carList(
+            @And({
+                    @Spec(path = "name", spec = Like.class),
+                    @Spec(path = "brand", spec = Like.class),
+                    @Spec(path = "city", spec = Equal.class),
+                    @Spec(path = "county", spec = Equal.class),
+                    @Spec(path = "district", spec = Equal.class),
+                    @Spec(path = "type", spec = Equal.class),
+                    @Spec(path = "discount", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "price_type", spec = Equal.class),
+                    @Spec(path = "price", params = "price_less_than", spec = LessThanOrEqual.class),
+                    @Spec(path = "price", params = "price_greater_than", spec = GreaterThanOrEqual.class)
+            }) Specification<CarEntity> spec,
+            @PageableDefault(size = 12, sort = {"createTime", "updateTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
 
-        return DataResponse.create().putPage("car_list", carService.getCarList(pageable));
+        return DataResponse.create().putPage("car_list", carService.getCarList(spec, pageable));
     }
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)

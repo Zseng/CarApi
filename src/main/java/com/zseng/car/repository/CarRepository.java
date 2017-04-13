@@ -1,14 +1,15 @@
-package com.zseng.car.dao;
+package com.zseng.car.repository;
 
 import com.zseng.car.entity.CarEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
  * Created by cc on 2017/4/10.
  */
 @Repository
-public interface CarRepository extends JpaRepository<CarEntity, Long> {
+public interface CarRepository extends JpaRepository<CarEntity, Long>, JpaSpecificationExecutor<CarEntity> {
 
     CarEntity findById(Long id);
 

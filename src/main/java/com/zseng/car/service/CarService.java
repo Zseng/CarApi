@@ -1,7 +1,7 @@
 package com.zseng.car.service;
 
 import com.zseng.car.common.Util;
-import com.zseng.car.dao.CarRepository;
+import com.zseng.car.repository.CarRepository;
 import com.zseng.car.entity.CarEntity;
 import com.zseng.car.exception.InvalidParamsException;
 import com.zseng.car.exception.NotExistsException;
@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +34,9 @@ public class CarService {
         return carRepo.save(car);
     }
 
-    public Page<CarEntity> getCarList(Pageable pageable) {
+    public Page<CarEntity> getCarList(Specification<CarEntity> spec, Pageable pageable) {
 
-        return carRepo.findAll(pageable);
+        return carRepo.findAll(spec, pageable);
     }
 
     public CarEntity saveCar(Long id, String name, String info, String brand, Integer city, Integer county, Integer district, Integer type, Double price, Integer priceType, String phone, String img, Double discount) {

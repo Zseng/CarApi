@@ -10,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration
+@ComponentScan(basePackages="net.kaczmarzyk")
 @PropertySource("classpath:application.properties")
 @ComponentScan
 public class CarApplication {

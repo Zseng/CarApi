@@ -1,7 +1,7 @@
 package com.zseng.car.service;
 
 import com.zseng.car.common.Util;
-import com.zseng.car.dao.HistoryRepository;
+import com.zseng.car.repository.HistoryRepository;
 import com.zseng.car.entity.HistoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

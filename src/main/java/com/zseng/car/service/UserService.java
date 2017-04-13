@@ -2,7 +2,7 @@ package com.zseng.car.service;
 
 import com.zseng.car.common.PasswordHash;
 import com.zseng.car.common.Util;
-import com.zseng.car.dao.UserRepository;
+import com.zseng.car.repository.UserRepository;
 import com.zseng.car.entity.UserEntity;
 import com.zseng.car.exception.ExistsException;
 import com.zseng.car.exception.InvalidParamsException;

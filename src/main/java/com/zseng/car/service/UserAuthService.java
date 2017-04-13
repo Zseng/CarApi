@@ -1,6 +1,6 @@
 package com.zseng.car.service;
 
-import com.zseng.car.dao.UserRepository;
+import com.zseng.car.repository.UserRepository;
 import com.zseng.car.entity.UserEntity;
 import com.zseng.car.model.UserAuth;
 import org.springframework.beans.factory.annotation.Autowired;

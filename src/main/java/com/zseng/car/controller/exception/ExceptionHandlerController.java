@@ -45,7 +45,9 @@ public class ExceptionHandlerController {
                 errorResponse.setMessage(baseException.getMessage());
             }
 
-            e.printStackTrace();
+            if (!(e instanceof BaseException)) {
+                e.printStackTrace();
+            }
         }
 
         return errorResponse;

@@ -9,7 +9,8 @@
       <mapping class="com.zseng.car.entity.CarEntity"/>
     <mapping class="com.zseng.car.entity.UserEntity"/>
     <mapping class="com.zseng.car.entity.HistoryEntity"/>
-    <!-- <property name="connection.username"/> -->
+      <mapping class="com.zseng.car.entity.OrderEntity"/>
+      <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
     <!-- DB schema will be updated if needed -->

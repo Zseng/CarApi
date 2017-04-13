@@ -18,7 +18,7 @@ import java.util.HashMap;
 /**
  * Created by cc on 2017/4/12.
  */
-@RestController("UploadController")
+@RestController("V1.UploadController")
 @RequestMapping("/api/v1/upload")
 @Controller
 public class UploadController {

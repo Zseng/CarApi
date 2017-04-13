@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.zseng.car.common.OutputEntityJsonView;
 import com.zseng.car.common.Util;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,7 +33,9 @@ public class CarEntity {
     private int status = 0;
     private long createTime = 0;
     private long updateTime = 0;
+    private long ownerId;
 
+    private UserEntity user;
     private List<String> imgList;
 
     @Id
@@ -182,9 +186,11 @@ public class CarEntity {
     @Basic
     @Column(name = "img", nullable = false, length = 299)
     @JsonProperty("img")
-    @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
+    @JsonView({OutputEntityJsonView.Basic.class})
     public String getImg() {
-        return img;
+
+        imgList = Util.explodeUrlString(img);
+        return imgList.size() > 0 ? imgList.get(0) : "";
     }
 
     public void setImg(String img) {
@@ -213,6 +219,31 @@ public class CarEntity {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Basic
+    @Column(name = "owner_id", nullable = false)
+    @JsonProperty("owner_id")
+    @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
+    public long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    @OneToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
+    @JsonProperty("owner")
+    @JsonView({OutputEntityJsonView.Basic.class, OutputEntityJsonView.Detail.class})
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Basic

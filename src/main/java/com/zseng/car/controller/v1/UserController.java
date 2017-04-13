@@ -17,7 +17,7 @@ import java.security.spec.InvalidKeySpecException;
 /**
  * Created by cc on 2017/4/10.
  */
-@RestController("UserController")
+@RestController("V1.UserController")
 @RequestMapping("/api/v1/user")
 @Controller
 public class UserController {
