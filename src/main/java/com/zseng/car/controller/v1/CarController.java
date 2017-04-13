@@ -12,8 +12,6 @@ import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Conjunction;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Disjunction;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +43,29 @@ public class CarController {
     @Autowired
     AuthenticationFacadeService authenticationFacadeService;
 
-    //TODO 这里逻辑会比较复杂，设计到各个参数的权重
     @RequestMapping(value = "/recommend", method = RequestMethod.GET)
     @JsonView(OutputEntityJsonView.Basic.class)
-    public DataResponse recommend() {
+    public DataResponse recommend(
+            @And({//这些参数可以由前端统计匿名用户的历史记录
+                    @Spec(path = "brand", spec = Like.class),
+                    @Spec(path = "city", spec = Equal.class),
+                    @Spec(path = "county", spec = Equal.class),
+                    @Spec(path = "district", spec = Equal.class),
+                    @Spec(path = "type", spec = Equal.class),
+                    @Spec(path = "discount", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "price_type", spec = Equal.class),
+                    @Spec(path = "price", params = "price_less_than", spec = LessThanOrEqual.class),
+                    @Spec(path = "price", params = "price_greater_than", spec = GreaterThanOrEqual.class)
+            }) Specification<CarEntity> spec,
+            @PageableDefault(size = 12, sort = {"createTime", "updateTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
 
+        //用户已经登录的话就返回根据历史记录的参数权重算出来的数据
         if (authenticationFacadeService.isUserAuth()) {
-            logger.info("userAuth: " + authenticationFacadeService.getUserAuth());
-        } else {
-            logger.info("not user auth");
+            return DataResponse.create().putPage("car_list", carService.recommend(authenticationFacadeService.getUserAuth().getUserId(), pageable));
+        } else {//否则按照热门返回或者根据传来的数据筛选返回
+            return DataResponse.create().putPage("car_list", carService.getCarList(spec, pageable));
         }
 
-        return DataResponse.create();
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

@@ -1,10 +1,12 @@
 package com.zseng.car.service;
 
 import com.zseng.car.common.Util;
+import com.zseng.car.entity.HistoryEntity;
 import com.zseng.car.repository.CarRepository;
 import com.zseng.car.entity.CarEntity;
 import com.zseng.car.exception.InvalidParamsException;
 import com.zseng.car.exception.NotExistsException;
+import com.zseng.car.repository.HistoryRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by cc on 2017/4/10.
@@ -22,6 +33,9 @@ public class CarService {
 
     @Autowired
     CarRepository carRepo;
+
+    @Autowired
+    HistoryRepository historyRepo;
 
     public CarEntity getCarDetail(Long id) {
 
@@ -65,5 +79,13 @@ public class CarService {
         car.setUpdateTime(isNew ? Util.time() : car.getCreateTime());
 
         return carRepo.save(car);
+    }
+
+    public Page<CarEntity> recommend(Long userId, Pageable pageable) {
+
+        HistoryEntity history = historyRepo.findTop1ByUserId(userId);
+        CarEntity car = carRepo.findById(history.getCarId());
+
+        return carRepo.findAllByType(car.getType(), pageable);
     }
 }
